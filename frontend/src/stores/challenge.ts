@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { LeaderboardColumn, LeaderboardResult, MetricValue, RankedResult, StaticScenario, TaskLeaderboard, Team } from '../types/challenge'
+import type { 
+  AttemptResult, LeaderboardColumn, LeaderboardResult, 
+  MetricValue, RankedResult, StaticScenario, TaskLeaderboard, 
+  Team, TeamAttempts 
+} from '../types/challenge'
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -32,6 +36,7 @@ export const useChallengeStore = defineStore('challenge', () => {
   const teams = ref<Team[]>([])
   const scenarios = ref<StaticScenario[]>([])
   const results = ref<LeaderboardResult[]>([])
+  const attempts = ref<AttemptResult[]>([])
   const updatedAt = ref<string | null>(null)
   const loading = ref(false)
   const error = ref('')
@@ -49,8 +54,8 @@ export const useChallengeStore = defineStore('challenge', () => {
     error.value = ''
     warnings.value = []
     try {
-      const [teamData, taskData, boardData] = await Promise.all([
-        readJson('teams.json'), readJson('tasks.json'), readJson('leaderboard.json'),
+      const [teamData, taskData, boardData, attemptData] = await Promise.all([
+        readJson('teams.json'), readJson('tasks.json'), readJson('leaderboard.json'), readJson('attempts.json'),
       ])
       if (!isObject(teamData) || !Array.isArray(teamData.teams)) 
         throw new Error('teams.json 구조가 올바르지 않습니다.')
@@ -58,6 +63,8 @@ export const useChallengeStore = defineStore('challenge', () => {
         throw new Error('tasks.json 구조가 올바르지 않습니다.')
       if (!isObject(boardData) || !Array.isArray(boardData.results)) 
         throw new Error('leaderboard.json 구조가 올바르지 않습니다.')
+      if (!isObject(attemptData) || !Array.isArray(attemptData.attempts))
+        throw new Error('attempts.json 구조가 올바르지 않습니다.')
 
       teams.value = teamData.teams.filter((item): item is Team =>
         isObject(item) && isText(item.teamId) && isText(item.teamName),
@@ -81,6 +88,7 @@ export const useChallengeStore = defineStore('challenge', () => {
 
       const teamIds = new Set(teams.value.map((team) => team.teamId))
       const taskRefs = new Set(scenarios.value.flatMap((scenario) => scenario.tasks.map((task) => `${scenario.id}/${task.id}`)))
+      
       results.value = boardData.results.filter((item, index): item is LeaderboardResult => {
         const valid = isObject(item) && isText(item.submissionId) && isText(item.teamId) &&
           isText(item.scenarioId) && isText(item.taskId) && typeof item.score === 'number' &&
@@ -92,6 +100,19 @@ export const useChallengeStore = defineStore('challenge', () => {
           ? Object.fromEntries(Object.entries(item.metrics).filter(([, value]) => isMetric(value))) : {}
         return valid
       })
+
+      attempts.value = attemptData.attempts.filter((item, index): item is AttemptResult => {
+        const nullableNumber = (value: unknown) => value === null || (typeof value === 'number' && Number.isFinite(value))
+        const valid = isObject(item) && isText(item.attemptId) && isText(item.teamId) &&
+          isText(item.scenarioId) && isText(item.taskId) && Number.isInteger(item.round) && Number(item.round) > 0 &&
+          typeof item.completed === 'boolean' && isDate(item.submittedAt) && nullableNumber(item.explorationRate) &&
+          nullableNumber(item.consistencyRate) && nullableNumber(item.contacts) && nullableNumber(item.taskScore) &&
+          nullableNumber(item.communicationSavings) && nullableNumber(item.finalScore) && isText(item.measurementStatus) &&
+          teamIds.has(item.teamId) && taskRefs.has(`${item.scenarioId}/${item.taskId}`)
+        if (!valid) warnings.value.push(`응시 결과 ${index + 1}번은 값 또는 참조가 잘못되어 제외했습니다.`)
+        return valid
+      })
+      
       updatedAt.value = boardData.updatedAt === null || isDate(boardData.updatedAt)
         ? boardData.updatedAt as string | null : null
       if (boardData.updatedAt !== null && updatedAt.value === null) 
@@ -126,13 +147,23 @@ export const useChallengeStore = defineStore('challenge', () => {
         return { ...result, rank, teamName: teamName(result.teamId) }
       })
   }
+  function attemptsByTask(scenarioId: string, taskId: string): TeamAttempts[] {
+    const grouped = new Map<string, AttemptResult[]>()
+    attempts.value.filter((attempt) => attempt.scenarioId === scenarioId && attempt.taskId === taskId)
+      .forEach((attempt) => grouped.set(attempt.teamId, [...(grouped.get(attempt.teamId) ?? []), attempt]))
+    return [...grouped.entries()].map(([teamId, teamAttempts]) => ({
+      teamId,
+      teamName: teamName(teamId),
+      attempts: teamAttempts.sort((a, b) => a.round - b.round),
+    })).sort((a, b) => a.teamName.localeCompare(b.teamName, 'ko'))
+  }
   const completedCount = computed(() => 
     results.value.filter((result) => result.status === 'COMPLETED').length
   )
   return { 
-    teams, scenarios, results, updatedAt, 
+    teams, scenarios, results, attempts, updatedAt, 
     loading, error, warnings, 
-    load, ranked, scenarioById, taskById, 
+    load, ranked, attemptsByTask, scenarioById, taskById, 
     completedCount 
   }
 })

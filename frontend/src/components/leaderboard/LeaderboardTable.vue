@@ -24,6 +24,9 @@ function sort(column: LeaderboardColumn) {
   if (sortKey.value === column.key) descending.value = !descending.value
   else { sortKey.value = column.key; descending.value = true }
 }
+function isSortable(column: LeaderboardColumn) {
+  return column.key !== 'team' && column.format !== 'status'
+}
 function display(value: MetricValue, format: LeaderboardColumn['format']) {
   if (value === null || value === undefined || value === '') {
     return '—'
@@ -53,11 +56,11 @@ function display(value: MetricValue, format: LeaderboardColumn['format']) {
 <template>
   <div class="table-shell">
     <div class="table-scroll">
-      <table class="leader-table">
+      <table class="leader-table stable-leader-table">
     <thead>
       <tr>
         <th class="cell-rank">순위</th>
-        <th v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { active: sortKey === column.key, 'cell-team': column.key === 'team' }]" @click="sort(column)">
+        <th v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { active: sortKey === column.key, sortable: isSortable(column), 'cell-team': column.key === 'team' }]" :aria-sort="sortKey === column.key ? (descending ? 'descending' : 'ascending') : undefined" @click="sort(column)">
           {{ column.label }} 
           <span v-if="sortKey === column.key">{{ descending ? '↓' : '↑' }}</span>
         </th>
@@ -79,7 +82,7 @@ function display(value: MetricValue, format: LeaderboardColumn['format']) {
       </tr>
       <tr v-if="config.baseline" class="baseline-row">
         <td class="cell-rank">참고</td>
-        <td v-for="column in config.columns" :key="column.key" :class="{ 'team-cell': column.key === 'team' }">
+        <td v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { 'team-cell': column.key === 'team' }]">
           <template v-if="column.key === 'team'">
             <span class="team-logo baseline">B</span>
             <b>기준 정책</b>

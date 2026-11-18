@@ -81,6 +81,29 @@ Remove-Item Env:VITE_BASE_PATH
 JSON 수정 → commit/push → GitHub Actions 실행 → GitHub Pages 자동 반영
 ```
 
+### 응시 상세 결과 추가
+
+`public/data/attempts.json`의 `attempts`에 팀·시나리오·태스크·회차별 측정 결과를 추가합니다. 상단 표에는 각 팀의 1회차만 표시되고, 팀 행을 선택하면 등록된 전체 회차가 펼쳐집니다.
+
+```json
+{
+  "attemptId": "team-001-s01-t01-r01",
+  "teamId": "team-001",
+  "scenarioId": "scenario-01",
+  "taskId": "task-01",
+  "round": 1,
+  "completed": true,
+  "submittedAt": "2026-11-18T13:01:00+09:00",
+  "explorationRate": 97,
+  "consistencyRate": 95,
+  "contacts": 1,
+  "taskScore": 0.445,
+  "communicationSavings": 55,
+  "finalScore": 1.065,
+  "measurementStatus": "정상"
+}
+```
+
 새로고침할 때 캐시 재검증과 고유 쿼리를 사용합니다. 불필요한 자동 요청은 하지 않으며 화면의 새로고침 버튼으로 갱신합니다.
 
 ## 보안 및 향후 제출 방식

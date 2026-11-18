@@ -729,6 +729,12 @@ h3 {
   color: var(--blue);
   background: #f3f7ff;
 }
+.stable-leader-table th {
+  cursor: default;
+}
+.stable-leader-table th.sortable {
+  cursor: pointer;
+}
 .leader-table th.cell-status,
 .leader-table th.cell-mb,
 .leader-table th.cell-text,
@@ -740,7 +746,7 @@ h3 {
 .leader-table td.cell-team,
 .admin-table th:first-child,
 .admin-table td:first-child {
-  text-align: left;
+  text-align: left !important;
 }
 .leader-table th.cell-team {
   padding-left: 20px !important;

@@ -52,3 +52,26 @@ export interface RankedResult extends LeaderboardResult {
   rank: number
   teamName: string
 }
+
+export interface AttemptResult {
+  attemptId: string
+  teamId: string
+  scenarioId: string
+  taskId: string
+  round: number
+  completed: boolean
+  submittedAt?: string
+  explorationRate: number | null
+  consistencyRate: number | null
+  contacts: number | null
+  taskScore: number | null
+  communicationSavings: number | null
+  finalScore: number | null
+  measurementStatus: string
+}
+
+export interface TeamAttempts {
+  teamId: string
+  teamName: string
+  attempts: AttemptResult[]
+}

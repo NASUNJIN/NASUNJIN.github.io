@@ -4,6 +4,7 @@
   const nav = [
     { to: '/overview', label: 'Overview', icon: 'grid' },
     { to: '/leaderboard', label: 'Leaderboard', icon: 'trophy' },
+    { to: '/attempts', label: '응시 상세', icon: 'file' },
     { to: '/data', label: 'Data', icon: 'database' },
     { to: '/submit', label: '제출 안내', icon: 'upload' },
   ] as const
@@ -34,6 +35,8 @@
         </RouterLink>
       </nav>
     </header>
-    <main class="page-container mx-auto w-full h-full"><slot /></main>
+    <main class="page-container mx-auto w-full h-full">
+      <slot />
+    </main>
   </div>
 </template>

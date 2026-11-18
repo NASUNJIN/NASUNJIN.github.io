@@ -15,6 +15,12 @@ const routes = [
     meta: { title: 'Leaderboard' },
   },
   {
+    path: '/attempts/:scenarioId?/:taskId?',
+    name: 'attempts',
+    component: () => import('../views/AttemptsView.vue'),
+    meta: { title: '응시 상세' },
+  },
+  {
     path: '/data',
     name: 'data',
     component: () => import('../views/DataView.vue'),
