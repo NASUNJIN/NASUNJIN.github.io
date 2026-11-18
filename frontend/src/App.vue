@@ -1,13 +1,14 @@
 <script setup lang="ts">
-  import { computed } from 'vue'
-  import { useRoute } from 'vue-router'
+  import { onMounted } from 'vue'
   import AppShell from './components/layout/AppShell.vue'
+  import { useChallengeStore } from './stores/challenge'
 
-  const route = useRoute()
-  const isAuthPage = computed(() => route.meta.layout === 'auth')
+  const store = useChallengeStore()
+  onMounted(() => store.load())
 </script>
 
 <template>
-  <RouterView v-if="isAuthPage" />
-  <AppShell v-else><RouterView /></AppShell>
+  <AppShell>
+    <RouterView />
+    </AppShell>
 </template>

@@ -630,7 +630,7 @@ h3 {
 }
 .task-segments {
   display: inline-flex;
-  gap: 3px;
+  gap: 8px;
   padding: 4px;
   border: 1px solid #e3e7ed;
   border-radius: 10px;
@@ -816,7 +816,7 @@ h3 {
 }
 .cell-score,
 .cell-score1 {
-  font-weight: 800;
+  /* font-weight: 800; */
   color: var(--navy);
 }
 .baseline-row {

@@ -3,10 +3,10 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH || '/',
   plugins: [vue(), tailwindcss()],
   server: {
     port: 4173,
-    proxy: { '/api': { target: 'http://localhost:3000', changeOrigin: true } },
   },
   preview: { port: 4173 },
 })

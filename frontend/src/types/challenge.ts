@@ -1,136 +1,54 @@
-export type UserRole = 'MASTER' | 'ADMIN' | 'USER'
-export type UserStatus = 'active' | 'pending' | 'suspended'
-export type TaskStatus = 'active' | 'coming-soon'
-export type SubmissionType = 'policy' | 'result'
-export type SortDirection = 'asc' | 'desc'
-
-export interface AuthUser {
-  id: number
-  name: string
-  email: string
-  role: UserRole
-  team_name: string | null
+export interface Team {
+  teamId: string
+  teamName: string
 }
 
-export interface LoginInput {
-  email: string
-  password: string
-}
-
-export interface ChallengeTask {
+export interface StaticTask {
   id: string
   name: string
-  status: TaskStatus
-  submissionType: SubmissionType
-  robotCount?: number | null
-  duration?: string
-  runs?: number
+  status: 'active' | 'coming-soon'
+  leaderboard: TaskLeaderboard
 }
 
-export interface Scenario {
-  id: string
-  name: string
-  description: string
-  tone: string
-  tasks: ChallengeTask[]
-}
-
-export type LeaderboardValue = string | number | boolean | null | undefined
-export type LeaderboardRow = Record<string, LeaderboardValue> & {
-  id: number
-  team: string
-  officialRank?: number
-  isMe?: boolean
-}
+export type MetricValue = string | number | boolean | null
 
 export interface LeaderboardColumn {
   key: string
   label: string
-  type: string
-  lowerBetter?: boolean
+  format: 'number' | 'score' | 'percent' | 'seconds' | 'megabytes' | 'status' | 'text'
 }
 
-export interface Leaderboard {
+export interface TaskLeaderboard {
   title: string
   description: string
-  defaultSort: { key: string; direction: SortDirection }
-  columns: LeaderboardColumn[]
-  rows: LeaderboardRow[]
-  baseline?: Record<string, LeaderboardValue>
   note: string
+  columns: LeaderboardColumn[]
+  baseline?: Record<string, MetricValue>
 }
 
-export interface EventSummary {
-  name: string
-  status: string
-  period: string
-  teams: number
-  submissions: number
-  queued: number
-  lastUpdated: string
-}
-
-export interface ResourceItem {
-  id: number
-  category: string
+export interface StaticScenario {
+  id: string
   name: string
   description: string
-  version: string
-  size: string
-  updatedAt: string
-  url: string
+  tone: 'blue' | 'orange' | 'violet'
+  tasks: StaticTask[]
 }
 
-export interface SubmissionItem {
-  id: number
-  task: string
-  policy: string
-  status: 'queued' | 'scoring' | 'done' | 'failed'
-  progress: number
-  runs: string
-  submittedAt: string
-  eta?: string
-  score?: number
-}
+export type ResultStatus = 'COMPLETED' | 'FAILED' | 'PENDING'
 
-export interface SubmissionRecord {
-  id: number
-  submitter_id: string
-  team_name: string
-  scenario_id: string
-  task_id: string
-  policy_name: string
-  method_description: string
-  original_filename: string
-  file_size: number
-  sha256: string
-  submitted_at: string
-  validation_result: { valid: boolean; warnings: string[]; errors: string[] }
-  grading_status: 'STORED' | 'QUEUED' | 'SCORING' | 'COMPLETED' | 'FAILED'
-  storage_file_id: string
-}
-
-export interface SubmissionTaskOption {
-  id: string
+export interface LeaderboardResult {
+  submissionId: string
+  teamId: string
   scenarioId: string
-  label: string
-  kind: 'policy' | 'fire-edit'
+  taskId: string
+  score: number
+  status: ResultStatus
+  submittedAt?: string
+  gradedAt?: string
+  metrics: Record<string, MetricValue>
 }
 
-export interface UserItem {
-  id: number
-  name: string
-  email: string
-  role: 'admin' | 'user'
-  status: UserStatus
-  joinedAt: string
-}
-
-export interface ChallengeMockData {
-  event: EventSummary
-  scenarios: Scenario[]
-  leaderboards: Record<string, Leaderboard>
-  resources: ResourceItem[]
-  submissions: SubmissionItem[]
-  users: UserItem[]
+export interface RankedResult extends LeaderboardResult {
+  rank: number
+  teamName: string
 }

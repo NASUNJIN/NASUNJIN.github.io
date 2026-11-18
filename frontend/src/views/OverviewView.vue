@@ -1,57 +1,35 @@
 <script setup lang="ts">
-  import { useChallengeStore } from '../stores/challenge'
-  import AppIcon from '../components/ui/AppIcon.vue'
-  import MetricCard from '../components/overview/MetricCard.vue'
-  const store = useChallengeStore()
+import { useChallengeStore } from '../stores/challenge'
+import AppIcon from '../components/ui/AppIcon.vue'
+import MetricCard from '../components/overview/MetricCard.vue'
+const store = useChallengeStore()
+const scenarioIcon = (index: number) => index === 0 ? 'grid' as const : index === 1 ? 'spark' as const : 'database' as const
 </script>
 <template>
   <div class="page-stack flex flex-col gap-6">
     <section class="hero-panel">
       <div>
-        <span class="eyebrow">AGENT CHALLENGE 2026</span>
+        <span class="eyebrow">PUBLIC HACKATHON</span>
         <h1><strong>Challenge Overview</strong></h1>
-        <p class="font-medium">시나리오를 선택하고 태스크별 리더보드와 제출 현황을 확인하세요.</p>
-      </div>
-      <div class="event-card">
-        <span class="live-dot"></span>
-        <div>
-          <b>대회 운영 중</b>
-          <small>{{ store.event.period }}</small>
-        </div>
+        <p class="font-medium">정적 JSON으로 운영되는 공개 해커톤 리더보드입니다.</p>
       </div>
     </section>
+    <p v-if="store.loading" class="panel">데이터를 불러오는 중입니다…</p>
+    <p v-else-if="store.error" class="panel form-error" role="alert">
+      {{ store.error }} 
+      <button class="table-action" @click="store.load">다시 시도</button>
+    </p>
     <section class="metrics-grid grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <MetricCard
-        label="참가 팀"
-        :value="store.event.teams"
-        hint="승인된 팀"
-        tone="blue"
-      >
-        <AppIcon name="users" class="w-6 h-6" />
+      <MetricCard label="참가 팀" :value="store.teams.length" hint="teams.json" tone="blue">
+        <AppIcon name="users" />
       </MetricCard>
-      <MetricCard
-        label="전체 제출"
-        :value="store.event.submissions"
-        hint="4개 활성 태스크"
-        tone="orange"
-      >
-        <AppIcon name="upload" class="w-6 h-6" />
+      <MetricCard label="완료 결과" :value="store.completedCount" hint="COMPLETED" tone="orange">
+        <AppIcon name="trophy" />
       </MetricCard>
-      <MetricCard
-        label="채점 대기"
-        :value="store.event.queued"
-        hint="예상 최대 3시간"
-        tone="violet"
-      >
-        <AppIcon name="clock" class="w-6 h-6" />
-      </MetricCard>
-      <MetricCard
-        label="활성 리더보드"
-        :value="store.activeTasks.length"
-        hint="준비 중 3개"
-        tone="green"
-      >
-        <AppIcon name="trophy" class="w-6 h-6" />
+      <MetricCard label="시나리오" :value="store.scenarios.length" hint="tasks.json" tone="violet">
+        <AppIcon name="grid" /></MetricCard>
+      <MetricCard label="전체 태스크" :value="store.scenarios.flatMap((item) => item.tasks).length" hint="공개 과제" tone="green">
+        <AppIcon name="database" />
       </MetricCard>
     </section>
     <section class="section-block">
@@ -60,105 +38,31 @@
           <span class="eyebrow">CHALLENGES</span>
           <h2><strong>시나리오별 태스크</strong></h2>
         </div>
-        <RouterLink
-          class="text-link"
-          to="/leaderboard"
-        >
-          전체 리더보드
+        <RouterLink class="text-link" to="/leaderboard">
+          전체 리더보드 
           <AppIcon name="arrow" />
         </RouterLink>
       </div>
-      <div class="scenario-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        <article
-          v-for="(scenario, idx) in store.scenarios"
-          :key="scenario.id"
-          class="scenario-card"
-          :class="scenario.tone"
-        >
-          <div class="scenario-number">0{{ idx + 1 }}</div>
+      <div v-if="store.scenarios.length" class="scenario-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <article v-for="(scenario, index) in store.scenarios" :key="scenario.id" class="scenario-card" :class="scenario.tone">
+          <div class="scenario-number">
+            {{ String(index + 1).padStart(2, '0') }}
+          </div>
           <span class="scenario-icon">
-            <AppIcon
-              :name="idx === 0 ? 'grid' : idx === 1 ? 'spark' : 'database'"
-              :size="24"
-            />
+            <AppIcon :name="scenarioIcon(index)" :size="24" />
           </span>
-          <h3>
-            <strong>{{ scenario.name }}</strong>
-          </h3>
+          <h3><strong>{{ scenario.name }}</strong></h3>
           <p class="font-medium">{{ scenario.description }}</p>
           <div class="task-list">
-            <RouterLink
-              v-for="task in scenario.tasks"
-              :key="task.id"
-              :to="task.status === 'active' ? `/leaderboard/${scenario.id}/${task.id}` : ''"
-              :class="{ disabled: task.status !== 'active' }"
-            >
+            <RouterLink v-for="task in scenario.tasks" :key="task.id" :to="task.status === 'active' ? `/leaderboard/${scenario.id}/${task.id}` : ''" :class="{ disabled: task.status !== 'active' }" :aria-disabled="task.status !== 'active'">
               <span class="font-semibold">{{ task.name }}</span>
               <small v-if="task.status !== 'active'">준비 중</small>
-              <AppIcon
-                v-else
-                name="chevron"
-              />
+              <AppIcon v-else name="chevron" />
             </RouterLink>
           </div>
         </article>
       </div>
-    </section>
-    <section class="split-section grid gap-5 xl:grid-cols-[1.35fr_1fr]">
-      <article class="panel">
-        <div class="panel-heading">
-          <h3><strong>내 최근 제출</strong></h3>
-          <RouterLink to="/submit">전체 보기</RouterLink>
-        </div>
-        <div class="submission-list">
-          <div
-            v-for="item in store.submissions"
-            :key="item.id"
-            class="submission-item"
-          >
-            <span class="file-tile">
-              <AppIcon name="file" />
-            </span>
-            <div>
-              <b>{{ item.policy }}</b>
-              <small>{{ item.task }} · {{ item.submittedAt }}</small>
-            </div>
-            <span
-              class="submission-status"
-              :class="item.status"
-            >
-              {{
-                item.status === 'done'
-                  ? `완료 · ${item.score}`
-                  : item.status === 'scoring'
-                    ? `채점 중 ${item.runs}`
-                    : '대기 중'
-              }}
-            </span>
-          </div>
-        </div>
-      </article>
-      <article class="panel quick-panel">
-        <div class="panel-heading">
-          <h3><strong>빠른 시작</strong></h3>
-        </div>
-        <RouterLink to="/data">
-          <AppIcon name="download" />
-          <span>
-            <b>개발 자료 내려받기</b>
-            <small>실행 환경, 예제 정책, 공개 시나리오</small>
-          </span>
-          <AppIcon name="chevron" />
-        </RouterLink>
-        <RouterLink to="/submit">
-          <AppIcon name="upload" />
-          <span>
-            <b>새 결과물 제출</b>
-            <small>정책 코드 또는 Fire Edit 결과</small>
-          </span>
-          <AppIcon name="chevron" />
-        </RouterLink>
-      </article>
+      <div v-else class="panel">등록된 시나리오가 없습니다.</div>
     </section>
   </div>
 </template>

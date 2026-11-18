@@ -1,20 +1,12 @@
 <script setup lang="ts">
-  import { useRouter } from 'vue-router'
-  import { useAuthStore } from '../../stores/auth'
   import AppIcon from '../ui/AppIcon.vue'
 
-  const router = useRouter()
-  const auth = useAuthStore()
   const nav = [
     { to: '/overview', label: 'Overview', icon: 'grid' },
     { to: '/leaderboard', label: 'Leaderboard', icon: 'trophy' },
     { to: '/data', label: 'Data', icon: 'database' },
-    { to: '/submit', label: 'Submit', icon: 'upload' },
+    { to: '/submit', label: '제출 안내', icon: 'upload' },
   ] as const
-  function signOut() {
-    auth.logout()
-    router.push('/login')
-  }
 </script>
 
 <template>
@@ -40,28 +32,7 @@
           :to="item.to">
           <AppIcon :name="item.icon" />{{ item.label }}
         </RouterLink>
-        <RouterLink
-          v-if="auth.isAdmin"
-          to="/admin"
-          ><AppIcon name="settings" />Admin</RouterLink
-        >
       </nav>
-      <div class="user-area">
-        <span class="live-dot"></span>
-        <span class="event-live">대회 운영 중</span>
-        <button
-          class="profile-button"
-          type="button"
-          @click="signOut"
-          title="로그아웃">
-          <span class="avatar">{{ auth.user?.name?.charAt(0) }}</span>
-          <span class="profile-copy">
-            <b>{{ auth.user?.name }}</b>
-            <small>{{ auth.user?.role === 'MASTER' ? '마스터' : auth.isAdmin ? '운영자' : '참가 팀' }}</small>
-          </span>
-          <AppIcon name="logout" />
-        </button>
-      </div>
     </header>
     <main class="page-container mx-auto w-full h-full"><slot /></main>
   </div>

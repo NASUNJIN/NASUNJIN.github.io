@@ -1,0 +1,22 @@
+{
+  "updatedAt": "2026-11-18T14:32:00+09:00",
+  "results": [
+    { "submissionId": "t1-001", "teamId": "team-001", "scenarioId": "scenario-01", "taskId": "task-01", "score": 1.184, "status": "COMPLETED", "metrics": { "taskScore": 0.491, "runs": "15/15", "submitTime": 402, "timeScore": 0.330, "exploration": 97, "consistency": 95, "collisions": 9, "communication": 64, "modelSize": 0.42, "reproduction": "재현됨" } },
+    { "submissionId": "t1-002", "teamId": "team-002", "scenarioId": "scenario-01", "taskId": "task-01", "score": 1.102, "status": "COMPLETED", "metrics": { "taskScore": 0.464, "runs": "14/15", "submitTime": 431, "timeScore": 0.280, "exploration": 97, "consistency": 94, "collisions": 12, "communication": 48, "modelSize": 1.1, "reproduction": "재현됨" } },
+    { "submissionId": "t1-003", "teamId": "team-003", "scenarioId": "scenario-01", "taskId": "task-01", "score": 0.957, "status": "COMPLETED", "metrics": { "taskScore": 0.401, "runs": "13/15", "submitTime": 455, "timeScore": 0.240, "exploration": 96, "consistency": 94, "collisions": 6, "communication": 51, "modelSize": 0.88, "reproduction": "확인 중" } },
+    { "submissionId": "t1-004", "teamId": "team-004", "scenarioId": "scenario-01", "taskId": "task-01", "score": 0.628, "status": "COMPLETED", "metrics": { "taskScore": 0.269, "runs": "10/15", "submitTime": 512, "timeScore": 0.150, "exploration": 95, "consistency": 91, "collisions": 21, "communication": 29, "modelSize": 3.2, "reproduction": "확인 못 함" } },
+
+    { "submissionId": "t2-003", "teamId": "team-003", "scenarioId": "scenario-01", "taskId": "task-02", "score": 0.802, "status": "COMPLETED", "metrics": { "formula": 2, "taskScore": 0.777, "found": "14/15", "foundTime": 61, "timeScore": 0.870, "collisions": 9, "communication": 31, "modelSize": 0.18, "reproduction": "확인 중" } },
+    { "submissionId": "t2-002", "teamId": "team-002", "scenarioId": "scenario-01", "taskId": "task-02", "score": 0.861, "status": "COMPLETED", "metrics": { "formula": 1, "taskScore": 0.835, "found": "15/15", "foundTime": 74, "timeScore": 0.900, "collisions": 6, "communication": 31, "modelSize": 0.21, "reproduction": "재현됨" } },
+    { "submissionId": "t2-005", "teamId": "team-005", "scenarioId": "scenario-01", "taskId": "task-02", "score": 0.571, "status": "COMPLETED", "metrics": { "formula": 3, "taskScore": 0.563, "found": "12/15", "foundTime": 120, "timeScore": 0.640, "collisions": 11, "communication": 12, "modelSize": 1.4, "reproduction": "재현 안 됨" } },
+
+    { "submissionId": "t3-005", "teamId": "team-005", "scenarioId": "scenario-02", "taskId": "task-03", "score": 0.803, "status": "COMPLETED", "metrics": { "formula": 3, "taskScore": 0.612, "runs": "14/15", "submitTime": 420, "timeScore": 0.650, "exploration": 97, "consistency": 96, "collisions": 15, "communication": 37, "modelSize": 12.0 } },
+    { "submissionId": "t3-006", "teamId": "team-006", "scenarioId": "scenario-02", "taskId": "task-03", "score": 1.083, "status": "COMPLETED", "metrics": { "formula": 1, "taskScore": 0.810, "runs": "15/15", "submitTime": 280, "timeScore": 0.770, "exploration": 99, "consistency": 95, "collisions": 3, "communication": 58, "modelSize": 2.9 } },
+    { "submissionId": "t3-001", "teamId": "team-001", "scenarioId": "scenario-02", "taskId": "task-03", "score": 0.942, "status": "COMPLETED", "metrics": { "formula": 2, "taskScore": 0.712, "runs": "14/15", "submitTime": 340, "timeScore": 0.720, "exploration": 98, "consistency": 91, "collisions": 8, "communication": 47, "modelSize": 6.4 } },
+
+    { "submissionId": "t4-002", "teamId": "team-002", "scenarioId": "scenario-02", "taskId": "task-04", "score": 85.6, "status": "COMPLETED", "metrics": { "accuracy": 96.8, "consistency": 78.4, "aesthetics": 81.6, "entries": 7, "last": "1일 전" } },
+    { "submissionId": "t4-001", "teamId": "team-001", "scenarioId": "scenario-02", "taskId": "task-04", "score": 85.0, "status": "COMPLETED", "metrics": { "accuracy": 94.1, "consistency": 81.0, "aesthetics": 79.9, "entries": 11, "last": "5시간 전" } },
+    { "submissionId": "t4-006", "teamId": "team-006", "scenarioId": "scenario-02", "taskId": "task-04", "score": 81.8, "status": "COMPLETED", "metrics": { "accuracy": 92.7, "consistency": 72.5, "aesthetics": 80.2, "entries": 9, "last": "2일 전" } },
+    { "submissionId": "t4-003", "teamId": "team-003", "scenarioId": "scenario-02", "taskId": "task-04", "score": 79.4, "status": "COMPLETED", "metrics": { "accuracy": 93.0, "consistency": 66.8, "aesthetics": 78.4, "entries": 3, "last": "2시간 전" } }
+  ]
+}

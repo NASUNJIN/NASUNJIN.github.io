@@ -1,0 +1,10 @@
+{
+  "teams": [
+    { "teamId": "team-001", "teamName": "PyroSync" },
+    { "teamId": "team-002", "teamName": "FlameDiffusers" },
+    { "teamId": "team-003", "teamName": "Ember-Lab" },
+    { "teamId": "team-004", "teamName": "SmokeSignal" },
+    { "teamId": "team-005", "teamName": "Kindling" },
+    { "teamId": "team-006", "teamName": "BurnRate" }
+  ]
+}
