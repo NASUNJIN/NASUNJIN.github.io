@@ -716,6 +716,10 @@ h3 {
   border-top: 1px solid #edf0f3;
   text-align: right;
 }
+.leader-table th:last-child,
+.leader-table td:last-child {
+  padding-right: 20px;
+}
 .leader-table th,
 .admin-table th {
   font-size: 10px;
@@ -735,11 +739,25 @@ h3 {
 .stable-leader-table th.sortable {
   cursor: pointer;
 }
-.leader-table th.cell-status,
 .leader-table th.cell-mb,
 .leader-table th.cell-text,
 .leader-table td.cell-mb,
 .leader-table td.cell-text {
+  padding-right: 20px !important;
+}
+.leader-table th.cell-status,
+.leader-table td.cell-status {
+  padding-right: 12px !important;
+  padding-left: 12px !important;
+}
+.leader-table th.cell-status {
+  text-align: right !important;
+}
+.leader-table td.cell-status {
+  text-align: right !important;
+}
+.leader-table th.cell-status:last-child,
+.leader-table td.cell-status:last-child {
   padding-right: 20px !important;
 }
 .leader-table th.cell-team,
@@ -756,6 +774,10 @@ h3 {
 .leader-table .cell-official,
 .leader-table .cell-index {
   text-align: center;
+}
+.leader-table th.cell-official,
+.leader-table td.cell-official {
+  text-align: center !important;
 }
 .leader-table .cell-rank,
 .leader-table .cell-official,

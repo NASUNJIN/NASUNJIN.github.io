@@ -60,7 +60,7 @@ function display(value: MetricValue, format: LeaderboardColumn['format']) {
     <thead>
       <tr>
         <th class="cell-rank">순위</th>
-        <th v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { active: sortKey === column.key, sortable: isSortable(column), 'cell-team': column.key === 'team' }]" :aria-sort="sortKey === column.key ? (descending ? 'descending' : 'ascending') : undefined" @click="sort(column)">
+        <th v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { active: sortKey === column.key, sortable: isSortable(column), 'cell-team': column.key === 'team', 'cell-official': column.key === 'formula' }]" :aria-sort="sortKey === column.key ? (descending ? 'descending' : 'ascending') : undefined" @click="sort(column)">
           {{ column.label }} 
           <span v-if="sortKey === column.key">{{ descending ? '↓' : '↑' }}</span>
         </th>
@@ -69,7 +69,7 @@ function display(value: MetricValue, format: LeaderboardColumn['format']) {
     <tbody>
       <tr v-for="row in sortedRows" :key="row.submissionId">
         <td class="cell-rank">{{ row.rank }}</td>
-        <td v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { 'team-cell': column.key === 'team' }]">
+        <td v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { 'team-cell': column.key === 'team', 'cell-official': column.key === 'formula' }]">
           <template v-if="column.key === 'team'">
             <span class="team-logo">{{ row.teamName.charAt(0) }}</span>
             <b>{{ row.teamName }}</b>
@@ -82,7 +82,7 @@ function display(value: MetricValue, format: LeaderboardColumn['format']) {
       </tr>
       <tr v-if="config.baseline" class="baseline-row">
         <td class="cell-rank">참고</td>
-        <td v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { 'team-cell': column.key === 'team' }]">
+        <td v-for="column in config.columns" :key="column.key" :class="[`cell-${column.format}`, { 'team-cell': column.key === 'team', 'cell-official': column.key === 'formula' }]">
           <template v-if="column.key === 'team'">
             <span class="team-logo baseline">B</span>
             <b>기준 정책</b>
