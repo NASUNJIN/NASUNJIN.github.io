@@ -21,7 +21,7 @@ export interface LeaderboardColumn {
 export interface TaskLeaderboard {
   title: string
   description: string
-  note: string
+  note?: string
   columns: LeaderboardColumn[]
   baseline?: Record<string, MetricValue>
 }

@@ -11,7 +11,6 @@
           "leaderboard": {
             "title": "기본 협업 지도 제작",
             "description": "공식 순위는 15회 최종 점수의 중앙값 기준입니다.",
-            "note": "과제 점수 = 0.8×접촉 × (0.6×시간 점수 + 0.4×탐사율×일치율). 세부 값은 15회 결과 집계값입니다.",
             "columns": [
               { "key": "team", "label": "팀", "format": "text" },
               { "key": "score", "label": "응시 점수", "format": "score" },
@@ -34,7 +33,6 @@
           "leaderboard": {
             "title": "기본 협업 사람 찾기",
             "description": "순위는 찾은 시각이 빠른 순이며, 공식 순위는 응시 점수 기준입니다.",
-            "note": "과제 점수 = 0.8×접촉 × 시간 점수. 못 찾은 회차는 0점이며 찾은 시각은 찾은 회차의 중앙값입니다.",
             "columns": [
               { "key": "formula", "label": "공식", "format": "number" },
               { "key": "team", "label": "팀", "format": "text" },
@@ -64,7 +62,6 @@
           "leaderboard": {
             "title": "재난 대응 지도 제작",
             "description": "순위는 일치율이 높은 순이며, 공식 순위는 응시 점수 기준입니다.",
-            "note": "기본 협업 지도 제작과 같은 점수식을 사용하며 제한 시간은 1,200초입니다.",
             "columns": [
               { "key": "formula", "label": "공식", "format": "number" },
               { "key": "team", "label": "팀", "format": "text" },
@@ -87,7 +84,6 @@
           "leaderboard": {
             "title": "재난 대응 Fire Edit",
             "description": "공개 영상 3편의 화재 이미지 편집 결과를 평가합니다.",
-            "note": "Score = (정합성 + 일관성 + 심미성) / 3",
             "columns": [
               { "key": "team", "label": "팀", "format": "text" },
               { "key": "accuracy", "label": "정합성", "format": "score" },
