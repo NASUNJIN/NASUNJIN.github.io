@@ -3,7 +3,7 @@
   "results": [
     { 
       "submissionId": "t1-001", "teamId": "team-001", "scenarioId": "scenario-01", "taskId": "task-01", "score": 1.184, "status": "COMPLETED", 
-      "metrics": { "taskScore": 0.491, "runs": "15/15", "submitTime": 402, "timeScore": 0.330, "exploration": 97, "consistency": 95, "collisions": 9, "communication": 64, "modelSize": 0.42, "reproduction": "재현됨" } 
+      "metrics": { "taskScore": 0.311, "runs": "15/15", "submitTime": 402, "timeScore": 0.330, "exploration": 97, "consistency": 95, "collisions": 9, "communication": 64, "modelSize": 0.42, "reproduction": "재현됨" } 
     },
     { 
       "submissionId": "t1-002", "teamId": "team-002", "scenarioId": "scenario-01", "taskId": "task-01", "score": 1.102, "status": "COMPLETED", 
