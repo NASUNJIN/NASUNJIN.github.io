@@ -2,9 +2,6 @@
 
 interface ImportMetaEnv {
   readonly BASE_URL: string
-  readonly VITE_GITHUB_RELEASE_REPOSITORY: string
-  readonly VITE_GITHUB_RELEASE_TAG: string
-  readonly VITE_GITHUB_RELEASE_BUNDLE: string
 }
 
 interface ImportMeta {
