@@ -7,6 +7,9 @@ export interface StaticTask {
   id: string
   name: string
   status: 'active' | 'coming-soon'
+  download?: {
+    asset: string
+  }
   leaderboard: TaskLeaderboard
 }
 

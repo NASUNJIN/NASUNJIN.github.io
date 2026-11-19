@@ -82,6 +82,10 @@ export const useChallengeStore = defineStore('challenge', () => {
               id: (task as Record<string, unknown>).id as string,
               name: (task as Record<string, unknown>).name as string,
               status: (task as Record<string, unknown>).status === 'coming-soon' ? 'coming-soon' as const : 'active' as const,
+              ...(isObject((task as Record<string, unknown>).download) &&
+                isText(((task as Record<string, unknown>).download as Record<string, unknown>).asset)
+                ? { download: { asset: ((task as Record<string, unknown>).download as Record<string, unknown>).asset as string } }
+                : {}),
               leaderboard: parseLeaderboard((task as Record<string, unknown>).leaderboard, item.name as string, (task as Record<string, unknown>).name as string),
             })),
         }))

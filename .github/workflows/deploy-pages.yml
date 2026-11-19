@@ -28,6 +28,8 @@ jobs:
         working-directory: frontend
         env:
           VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH }}
+          VITE_GITHUB_RELEASE_REPOSITORY: ${{ vars.VITE_GITHUB_RELEASE_REPOSITORY }}
+          VITE_GITHUB_RELEASE_TAG: ${{ vars.VITE_GITHUB_RELEASE_TAG }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
