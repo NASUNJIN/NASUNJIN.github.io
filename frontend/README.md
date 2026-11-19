@@ -31,6 +31,17 @@ Remove-Item Env:VITE_BASE_PATH
 
 `VITE_BASE_PATH`는 `/`로 시작하고 끝나야 합니다. 조직 루트 Pages는 `/`, 프로젝트 Pages는 `/<repository-name>/`입니다.
 
+Data 페이지의 `기본 협업 > 지도 제작` 자료 다운로드 링크는 다음 빌드 환경변수로 설정합니다.
+
+```env
+VITE_GITHUB_RELEASE_REPOSITORY=SUN-JJI/SUN-JJI.github.io
+VITE_GITHUB_RELEASE_TAG=test
+VITE_GITHUB_RELEASE_BUNDLE=all-assets.zip
+```
+
+로컬에서는 `.env.example`을 `.env`로 복사해 사용할 수 있습니다. GitHub Pages 배포값은
+`.github/workflows/deploy-pages.yml`의 빌드 환경변수에서 관리합니다.
+
 ## GitHub Pages 배포
 
 1. **Settings → Pages → Source**에서 **GitHub Actions**를 선택합니다.

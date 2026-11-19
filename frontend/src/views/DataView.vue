@@ -5,6 +5,16 @@ import AppIcon from '../components/ui/AppIcon.vue'
 
 const store = useChallengeStore()
 const query = ref('')
+const releaseRepository = import.meta.env.VITE_GITHUB_RELEASE_REPOSITORY
+const releaseTag = import.meta.env.VITE_GITHUB_RELEASE_TAG
+const releaseBundle = import.meta.env.VITE_GITHUB_RELEASE_BUNDLE
+const releaseDownloadUrl = releaseRepository && releaseTag && releaseBundle
+  ? `https://github.com/${releaseRepository}/releases/download/${encodeURIComponent(releaseTag)}/${encodeURIComponent(releaseBundle)}`
+  : ''
+
+const isReleaseDownload = (scenarioId: string, taskId: string) =>
+  scenarioId === 'scenario-01' && taskId === 'task-01' && Boolean(releaseDownloadUrl)
+
 const normalizedQuery = computed(() => query.value.trim().toLocaleLowerCase('ko'))
 const scenarios = computed(() => store.scenarios.map((scenario) => ({
   ...scenario,
@@ -30,7 +40,7 @@ const scenarios = computed(() => store.scenarios.map((scenario) => ({
       <h2><strong>정적 공개 데이터</strong></h2>
       <p>
         이 페이지는 서버나 로그인 없이 <code>public/data/tasks.json</code>을 읽어 표시합니다. 
-        학습 자료나 참가자 제출 파일 다운로드는 현재 제공하지 않습니다.
+        다운로드가 표시된 태스크를 선택하면 해당 공개 자료를 받을 수 있습니다.
       </p>
     </section>
     <div class="toolbar">
@@ -61,13 +71,30 @@ const scenarios = computed(() => store.scenarios.map((scenario) => ({
         <h3>{{ scenario.name }}</h3>
         <p>{{ scenario.tasks.length }}개 태스크</p>
         <div class="task-list">
-          <RouterLink v-for="task in scenario.tasks" :key="task.id" :to="task.status === 'active' ? `/leaderboard/${scenario.id}/${task.id}` : ''" :class="{ disabled: task.status !== 'active' }">
-            <span>
-              <b>{{ task.name }}</b>
-              <small>{{ task.status === 'active' ? task.id : '준비 중' }}</small>
-            </span>
-            <AppIcon v-if="task.status === 'active'" name="chevron" />
-          </RouterLink>
+          <template v-for="task in scenario.tasks" :key="task.id">
+            <a
+              v-if="isReleaseDownload(scenario.id, task.id)"
+              :href="releaseDownloadUrl"
+              download
+            >
+              <span>
+                <b>{{ task.name }}</b>
+                <small>전체 자료 다운로드</small>
+              </span>
+              <AppIcon name="chevron" />
+            </a>
+            <RouterLink
+              v-else
+              :to="task.status === 'active' ? `/leaderboard/${scenario.id}/${task.id}` : ''"
+              :class="{ disabled: task.status !== 'active' }"
+            >
+              <span>
+                <b>{{ task.name }}</b>
+                <small>{{ task.status === 'active' ? task.id : '준비 중' }}</small>
+              </span>
+              <AppIcon v-if="task.status === 'active'" name="chevron" />
+            </RouterLink>
+          </template>
         </div>
       </article>
     </section>

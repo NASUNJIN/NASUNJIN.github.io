@@ -28,6 +28,9 @@ jobs:
         working-directory: frontend
         env:
           VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH }}
+          VITE_GITHUB_RELEASE_REPOSITORY: SUN-JJI/SUN-JJI.github.io
+          VITE_GITHUB_RELEASE_TAG: test
+          VITE_GITHUB_RELEASE_BUNDLE: all-assets.zip
       - uses: actions/upload-pages-artifact@v3
         with:
           path: frontend/dist
